@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "OasisBuildUtility (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "OasisBuildUtility (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
