@@ -8,6 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+
+
     <Grid Background="#F8FAFC" Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -100,6 +102,7 @@
                                  FontSize="10"
                                  Height="28"
                                  Background="White"
+                                 RequestedTheme="Light"
                                  PlaceholderText="Select Java source directory..."
                                  Margin="0,0,6,0"/>
                         <Button Grid.Column="1" 
@@ -147,6 +150,7 @@
                                  FontSize="10"
                                  Height="28"
                                  Background="White"
+                                 RequestedTheme="Light"
                                  PlaceholderText="Select native source directory..."
                                  Margin="0,0,6,0"/>
                         <Button Grid.Column="1" 

@@ -14,8 +14,9 @@ namespace OasisBuildUtility
         public MainViewModel ViewModel { get; } = new MainViewModel();
         private AppWindow _appWindow;
         private IntPtr _hWnd;
-        private const int MinWidth = 1500;
-        private const int MinHeight = 1200;
+
+        private const double MinWidth = 0.8;
+        private const double MinHeight = 0.7;
 
         public MainWindow()
         {
@@ -41,7 +42,10 @@ namespace OasisBuildUtility
 
         private void SetInitialWindowSize()
         {
-            _appWindow.Resize(new SizeInt32(MinWidth, MinHeight));
+            int minWidth = (int)(GetSystemMetrics(0) * MinWidth);
+            int minHeight = (int)(GetSystemMetrics(1) * MinHeight);
+
+            _appWindow.Resize(new SizeInt32(minWidth, minHeight));
         }
 
         #region Window Message Handling
@@ -56,10 +60,14 @@ namespace OasisBuildUtility
 
             if (msg == WM_GETMINMAXINFO)
             {
+                int screenWidth = GetSystemMetrics(0);
+                int screenHeight = GetSystemMetrics(1);
+
                 var minMaxInfo = Marshal.PtrToStructure<MINMAXINFO>(lParam);
-                minMaxInfo.ptMinTrackSize.X = MinWidth;
-                minMaxInfo.ptMinTrackSize.Y = MinHeight;
+                minMaxInfo.ptMinTrackSize.X = (int)(screenWidth * MinWidth);
+                minMaxInfo.ptMinTrackSize.Y = (int)(screenHeight * MinHeight);
                 Marshal.StructureToPtr(minMaxInfo, lParam, false);
+
                 return IntPtr.Zero;
             }
 
@@ -102,6 +110,9 @@ namespace OasisBuildUtility
 
         [DllImport("user32.dll")]
         private static extern IntPtr DefWindowProc(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("user32.dll")]
+        private static extern int GetSystemMetrics(int nIndex);
         #endregion
     }
 }
