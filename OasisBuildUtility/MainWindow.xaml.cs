@@ -1,14 +1,13 @@
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Windowing;
-using WinRT.Interop;
-using Windows.Graphics;
-using System;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
-using System.Diagnostics;
 using Microsoft.UI;
-using System.Runtime.InteropServices;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using OasisBuildUtility.ViewModel;
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+using Windows.Graphics;
+using WinRT.Interop;
 
 namespace OasisBuildUtility
 {
@@ -27,55 +26,18 @@ namespace OasisBuildUtility
         {
             this.InitializeComponent();
             App.MainWindow = this;
-            _wndProcDelegate = WndProc; // Initialize delegate
+            _wndProcDelegate = WndProc;
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
         }
+
         private async void BuildButton_Click(object sender, RoutedEventArgs e)
         {
             ViewModel.AppendLogText("Build button clicked!");
-
-            ViewModel.AppendLogText("About to call StartCommandPrompt...");
-            StartCommandPrompt();
-            ViewModel.AppendLogText("StartCommandPrompt call completed.");
-
-            await ViewModel.TestBuildAsync();
+            // You can add your build logic here or call a method in ViewModel
         }
-        private void StartCommandPrompt()
-        {
-            ViewModel.AppendLogText("Attempting to start command prompt...");
 
-            try
-            {
-                ProcessStartInfo startInfo = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    UseShellExecute = true,
-                    CreateNoWindow = false,
-                    WindowStyle = ProcessWindowStyle.Normal
-                };
-
-                ViewModel.AppendLogText("ProcessStartInfo created, starting process...");
-
-                Process process = Process.Start(startInfo);
-
-                if (process != null)
-                {
-                    ViewModel.AppendLogText($"Command prompt started successfully. Process ID: {process.Id}");
-                }
-                else
-                {
-                    ViewModel.AppendLogText("Process.Start returned null - command prompt may not have started.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ViewModel.AppendLogText($"Exception occurred: {ex.GetType().Name}");
-                ViewModel.AppendLogText($"Exception message: {ex.Message}");
-                ViewModel.AppendLogText($"Stack trace: {ex.StackTrace}");
-            }
-        }
         private async void BrowseJavaSource_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.SelectJavaSourcePathAsync();
@@ -90,7 +52,6 @@ namespace OasisBuildUtility
         {
             ViewModel.ClearLog();
         }
-       
 
         private void InitializeAppWindow()
         {

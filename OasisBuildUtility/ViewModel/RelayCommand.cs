@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Windows.Input;
-
-using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
@@ -9,9 +6,9 @@ namespace OasisBuildUtility.ViewModel
 {
     public class RelayCommand : ICommand
     {
+        private readonly Func<Task> _executeAsync;
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
-        private readonly Func<Task> _executeAsync;
 
         public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
@@ -40,7 +37,7 @@ namespace OasisBuildUtility.ViewModel
             }
             else
             {
-                _execute?.Invoke();
+                _execute();
             }
         }
 
