@@ -1,27 +1,52 @@
 ﻿using System;
 using System.Windows.Input;
 
+using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
+
 namespace OasisBuildUtility.ViewModel
 {
     public class RelayCommand : ICommand
     {
         private readonly Action _execute;
-        private readonly Func<bool>? _canExecute;
+        private readonly Func<bool> _canExecute;
+        private readonly Func<Task> _executeAsync;
 
-        public RelayCommand(Action execute, Func<bool>? canExecute = null)
+        public RelayCommand(Action execute, Func<bool> canExecute = null)
         {
-            _execute = execute;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
-        public bool CanExecute(object? parameter) => _canExecute == null || _canExecute();
-        public void Execute(object? parameter) => _execute();
-
-        public event EventHandler CanExecuteChanged
+        public RelayCommand(Func<Task> executeAsync, Func<bool> canExecute = null)
         {
-            add { }   
-            remove { }
+            _executeAsync = executeAsync ?? throw new ArgumentNullException(nameof(executeAsync));
+            _canExecute = canExecute;
         }
 
+        public event EventHandler CanExecuteChanged;
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute?.Invoke() ?? true;
+        }
+
+        public async void Execute(object parameter)
+        {
+            if (_executeAsync != null)
+            {
+                await _executeAsync();
+            }
+            else
+            {
+                _execute?.Invoke();
+            }
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 }

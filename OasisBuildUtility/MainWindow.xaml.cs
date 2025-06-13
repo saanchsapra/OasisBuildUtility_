@@ -3,9 +3,11 @@ using Microsoft.UI.Windowing;
 using WinRT.Interop;
 using Windows.Graphics;
 using System;
-using OasisBuildUtility.ViewModel;
+using System.Windows;                                
+using System.Windows.Input;
 using Microsoft.UI;
 using System.Runtime.InteropServices;
+using OasisBuildUtility.ViewModel;
 
 namespace OasisBuildUtility
 {
@@ -14,6 +16,8 @@ namespace OasisBuildUtility
         public MainViewModel ViewModel { get; } = new MainViewModel();
         private AppWindow _appWindow;
         private IntPtr _hWnd;
+        private IntPtr _originalWndProc;
+        private readonly WndProcDelegate _wndProcDelegate;
 
         private const double MinWidth = 0.8;
         private const double MinHeight = 0.7;
@@ -22,10 +26,34 @@ namespace OasisBuildUtility
         {
             this.InitializeComponent();
             App.MainWindow = this;
+            _wndProcDelegate = WndProc; // Initialize delegate
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
         }
+
+        // Event handlers for debugging
+        private async void BuildButton_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.AppendLogText("Build button clicked!");  // Fixed method name
+            await ViewModel.TestBuildAsync();
+        }
+
+        private async void BrowseJavaSource_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.SelectJavaSourcePathAsync();
+        }
+
+        private async void BrowseNativeSource_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.SelectNativeSourcePathAsync();
+        }
+
+        private void ClearLog_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ClearLog();
+        }
+       
 
         private void InitializeAppWindow()
         {
@@ -36,7 +64,6 @@ namespace OasisBuildUtility
 
         private void SetupWindowMessageHandling()
         {
-            // Subclass the window to handle WM_GETMINMAXINFO
             _originalWndProc = SetWindowLongPtr(_hWnd, GWLP_WNDPROC, _wndProcDelegate);
         }
 
@@ -44,17 +71,13 @@ namespace OasisBuildUtility
         {
             int minWidth = (int)(GetSystemMetrics(0) * MinWidth);
             int minHeight = (int)(GetSystemMetrics(1) * MinHeight);
-
             _appWindow.Resize(new SizeInt32(minWidth, minHeight));
         }
 
         #region Window Message Handling
-        private IntPtr _originalWndProc;
-        private readonly WndProcDelegate _wndProcDelegate = WndProc;
-
         private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             const uint WM_GETMINMAXINFO = 0x0024;
 
@@ -63,22 +86,14 @@ namespace OasisBuildUtility
                 int screenWidth = GetSystemMetrics(0);
                 int screenHeight = GetSystemMetrics(1);
 
-                var minMaxInfo = Marshal.PtrToStructure<MINMAXINFO>(lParam);
+                MINMAXINFO minMaxInfo = Marshal.PtrToStructure<MINMAXINFO>(lParam);
                 minMaxInfo.ptMinTrackSize.X = (int)(screenWidth * MinWidth);
                 minMaxInfo.ptMinTrackSize.Y = (int)(screenHeight * MinHeight);
                 Marshal.StructureToPtr(minMaxInfo, lParam, false);
-
                 return IntPtr.Zero;
             }
 
-            // Get the original window procedure for this window
-            var window = App.MainWindow;
-            if (window != null)
-            {
-                return CallWindowProc(((MainWindow)window)._originalWndProc, hWnd, msg, wParam, lParam);
-            }
-
-            return DefWindowProc(hWnd, msg, wParam, lParam);
+            return CallWindowProc(_originalWndProc, hWnd, msg, wParam, lParam);
         }
         #endregion
 
@@ -102,7 +117,7 @@ namespace OasisBuildUtility
             public POINT ptMaxTrackSize;
         }
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, WndProcDelegate dwNewLong);
 
         [DllImport("user32.dll")]
