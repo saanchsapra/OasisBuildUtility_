@@ -515,6 +515,65 @@ namespace OasisBuildUtility.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        private string _commandInput;
+        public string CommandInput
+        {
+            get => _commandInput;
+            set
+            {
+                if (_commandInput != value)
+                {
+                    _commandInput = value;
+                    OnPropertyChanged(nameof(CommandInput));
+                }
+            }
+        }
+
+        private void ExecuteCustomCommand()
+        {
+            if (string.IsNullOrWhiteSpace(CommandInput))
+                return;
+
+            string command = CommandInput.Trim();
+            CommandInput = string.Empty;
+
+            // Display the command in log
+            LogText += $"\n> {command}\n";
+
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/c {command}",
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                };
+
+                var process = new Process { StartInfo = psi };
+                process.Start();
+
+                string output = process.StandardOutput.ReadToEnd();
+                string error = process.StandardError.ReadToEnd();
+                process.WaitForExit();
+
+                // Append output and error
+                if (!string.IsNullOrWhiteSpace(output))
+                    LogText += output;
+
+                if (!string.IsNullOrWhiteSpace(error))
+                    LogText += $"\nError: {error}";
+            }
+            catch (Exception ex)
+            {
+                LogText += $"\nException: {ex.Message}";
+            }
+
+            OnPropertyChanged(nameof(LogText));
+        }
+
     }
 
 

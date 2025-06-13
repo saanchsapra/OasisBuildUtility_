@@ -3,8 +3,9 @@ using Microsoft.UI.Windowing;
 using WinRT.Interop;
 using Windows.Graphics;
 using System;
-using System.Windows;                                
-using System.Windows.Input;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using System.Diagnostics;
 using Microsoft.UI;
 using System.Runtime.InteropServices;
 using OasisBuildUtility.ViewModel;
@@ -31,14 +32,50 @@ namespace OasisBuildUtility
             SetupWindowMessageHandling();
             SetInitialWindowSize();
         }
-
-        // Event handlers for debugging
         private async void BuildButton_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.AppendLogText("Build button clicked!");  // Fixed method name
+            ViewModel.AppendLogText("Build button clicked!");
+
+            ViewModel.AppendLogText("About to call StartCommandPrompt...");
+            StartCommandPrompt();
+            ViewModel.AppendLogText("StartCommandPrompt call completed.");
+
             await ViewModel.TestBuildAsync();
         }
+        private void StartCommandPrompt()
+        {
+            ViewModel.AppendLogText("Attempting to start command prompt...");
 
+            try
+            {
+                ProcessStartInfo startInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    UseShellExecute = true,
+                    CreateNoWindow = false,
+                    WindowStyle = ProcessWindowStyle.Normal
+                };
+
+                ViewModel.AppendLogText("ProcessStartInfo created, starting process...");
+
+                Process process = Process.Start(startInfo);
+
+                if (process != null)
+                {
+                    ViewModel.AppendLogText($"Command prompt started successfully. Process ID: {process.Id}");
+                }
+                else
+                {
+                    ViewModel.AppendLogText("Process.Start returned null - command prompt may not have started.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewModel.AppendLogText($"Exception occurred: {ex.GetType().Name}");
+                ViewModel.AppendLogText($"Exception message: {ex.Message}");
+                ViewModel.AppendLogText($"Stack trace: {ex.StackTrace}");
+            }
+        }
         private async void BrowseJavaSource_Click(object sender, RoutedEventArgs e)
         {
             await ViewModel.SelectJavaSourcePathAsync();
