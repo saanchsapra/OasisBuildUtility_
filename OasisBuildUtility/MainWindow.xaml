@@ -106,16 +106,18 @@
                         <Button Grid.Column="1" 
                                 Content="Browse" 
                                 Command="{x:Bind ViewModel.SelectJavaSourceCommand}" 
-                                Background="Transparent"
-                                Foreground="#2563EB"
-                                BorderBrush="#E2E8F0"
+                                Background="#2563EB"
+                                Foreground="White"
+                                BorderBrush="#1D4ED8"
                                 BorderThickness="1"
                                 CornerRadius="4"
-                                Padding="8,0"
+                                Padding="8,2"
                                 FontWeight="SemiBold"
-                                FontSize="10"
+                                FontSize="11"
                                 Height="28"
-                                MinWidth="50"/>
+                                MinWidth="60"/>
+
+
                     </Grid>
                 </Grid>
 
@@ -154,16 +156,18 @@
                         <Button Grid.Column="1" 
                                 Content="Browse" 
                                 Command="{x:Bind ViewModel.SelectNativeSourceCommand}" 
-                                Background="Transparent"
-                                Foreground="#2563EB"
-                                BorderBrush="#E2E8F0"
+                                Background="#2563EB"
+                                Foreground="White"
+                                BorderBrush="#1D4ED8"
                                 BorderThickness="1"
                                 CornerRadius="4"
-                                Padding="8,0"
+                                Padding="8,2"
                                 FontWeight="SemiBold"
-                                FontSize="10"
+                                FontSize="11"
                                 Height="28"
-                                MinWidth="50"/>
+                                MinWidth="60"/>
+
+
                     </Grid>
                 </Grid>
             </Grid>
@@ -171,39 +175,40 @@
 
         <!-- BUILD SECTION -->
         <Border Grid.Row="2"
-                Background="#FFFFFF" 
-                BorderBrush="#E2E8F0" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="12" 
-                Margin="0,0,0,8">
+        Background="#FFFFFF" 
+        BorderBrush="#E2E8F0" 
+        BorderThickness="1" 
+        CornerRadius="8" 
+        Padding="12" 
+        Margin="0,0,0,8">
             <StackPanel HorizontalAlignment="Center">
-                <TextBlock Text="Build Actions" 
-                           FontSize="12" 
-                           FontWeight="SemiBold" 
-                           Foreground="#1E293B" 
-                           Margin="0,0,0,6" 
-                           HorizontalAlignment="Center"/>
-
                 <Button x:Name="BuildButton" 
-                        Background="#2563EB"
-                        Foreground="White"
-                        BorderThickness="0"
-                        CornerRadius="4"
-                        Padding="16,6"
-                        FontWeight="SemiBold"
-                        FontSize="11"
-                        Height="32"
-                        MinWidth="120"
-                        HorizontalAlignment="Center"
-                        Command="{x:Bind ViewModel.StartBuildCommand}">
-                    <StackPanel Orientation="Horizontal">
-                        <FontIcon Glyph="&#xE768;" FontSize="12" Margin="0,0,4,0"/>
-                        <TextBlock Text="{x:Bind ViewModel.BuildButtonText, Mode=OneWay}" FontWeight="SemiBold"/>
+                Background="#22C55E"
+                Foreground="White"
+                BorderThickness="0"
+                CornerRadius="4"
+                Padding="20,8"
+                FontWeight="SemiBold"
+                FontSize="13"
+                Height="40"
+                MinWidth="140"
+                HorizontalAlignment="Center"
+                Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE768;" 
+                          FontSize="16" 
+                          Margin="0,0,6,0" 
+                          Foreground="White"/>
+                        <TextBlock Text="{x:Bind ViewModel.BuildButtonText, Mode=OneWay}" 
+                           FontSize="13"
+                           FontWeight="SemiBold" 
+                           Foreground="White"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
         </Border>
+
+
 
         <!-- LOG WINDOW SECTION -->
         <Border Grid.Row="3"
@@ -225,38 +230,40 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+
                     <TextBlock Grid.Column="0" 
                                Text="Build Log" 
                                FontSize="12" 
                                FontWeight="SemiBold" 
                                Foreground="#1E293B"/>
+
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                        <Button Content="Clear" 
-                                Background="Transparent"
-                                Foreground="#2563EB"
-                                BorderBrush="#E2E8F0"
-                                BorderThickness="1"
-                                CornerRadius="3"
-                                Padding="6,3"
-                                FontWeight="SemiBold"
-                                MinWidth="40"
-                                FontSize="9"
-                                Height="20"
-                                Margin="0,0,3,0"
-                                Command="{x:Bind ViewModel.ClearLogCommand}"/>
-                        <Button Content="Export" 
-                                Background="Transparent"
-                                Foreground="#2563EB"
-                                BorderBrush="#E2E8F0"
-                                BorderThickness="1"
-                                CornerRadius="3"
-                                Padding="6,3"
-                                FontWeight="SemiBold"
-                                MinWidth="40"
-                                FontSize="9"
-                                Height="20"/>
+                        <Button Content="Clear"
+                Background="#2563EB"
+                Foreground="White"
+                BorderThickness="0"
+                CornerRadius="4"
+                Padding="10,4"
+                FontWeight="Bold"
+                FontSize="11"
+                Height="28"
+                MinWidth="60"
+                Margin="0,0,6,0"
+                Command="{x:Bind ViewModel.ClearLogCommand}"/>
+
+                        <Button Content="Export"
+                Background="#2563EB"
+                Foreground="White"
+                BorderThickness="0"
+                CornerRadius="4"
+                Padding="10,4"
+                FontWeight="Bold"
+                FontSize="11"
+                Height="28"
+                MinWidth="60"/>
                     </StackPanel>
                 </Grid>
+
 
                 <!-- Log Display -->
                 <Border Grid.Row="1" 

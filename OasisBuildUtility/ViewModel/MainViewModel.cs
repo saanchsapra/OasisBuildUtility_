@@ -21,7 +21,7 @@ namespace OasisBuildUtility.ViewModel
         private string _operationStatus = "Ready";
         private readonly DispatcherQueue _dispatcherQueue;
 
-        // Commands
+
         public ICommand SelectJavaSourceCommand { get; }
         public ICommand SelectNativeSourceCommand { get; }
         public ICommand StartBuildCommand { get; }
@@ -219,7 +219,7 @@ namespace OasisBuildUtility.ViewModel
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "/c ipconfig", // 🔧 Replaced with `ipconfig`
+                    Arguments = "/c ipconfig", // 🔧 Replaced with `ipconfig
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

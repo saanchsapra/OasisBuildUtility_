@@ -1,13 +1,12 @@
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
+
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using OasisBuildUtility.ViewModel;
-using System;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
-using Windows.Graphics;
+using Microsoft.UI.Windowing;
 using WinRT.Interop;
+using Windows.Graphics;
+using System;
+using OasisBuildUtility.ViewModel;
+using Microsoft.UI;
+using System.Runtime.InteropServices;
 
 namespace OasisBuildUtility
 {
@@ -17,40 +16,18 @@ namespace OasisBuildUtility
         private AppWindow _appWindow;
         private IntPtr _hWnd;
         private IntPtr _originalWndProc;
-        private readonly WndProcDelegate _wndProcDelegate;
+        private WndProcDelegate _wndProcDelegate;
 
-        private const double MinWidth = 0.8;
-        private const double MinHeight = 0.7;
+        private const double MinWidth = 0.5;  
+        private const double MinHeight = 0.8; 
 
         public MainWindow()
         {
             this.InitializeComponent();
             App.MainWindow = this;
-            _wndProcDelegate = WndProc;
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
-        }
-
-        private async void BuildButton_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.AppendLogText("Build button clicked!");
-            // You can add your build logic here or call a method in ViewModel
-        }
-
-        private async void BrowseJavaSource_Click(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.SelectJavaSourcePathAsync();
-        }
-
-        private async void BrowseNativeSource_Click(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.SelectNativeSourcePathAsync();
-        }
-
-        private void ClearLog_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.ClearLog();
         }
 
         private void InitializeAppWindow()
@@ -62,6 +39,7 @@ namespace OasisBuildUtility
 
         private void SetupWindowMessageHandling()
         {
+            _wndProcDelegate = WndProc; // initialize delegate
             _originalWndProc = SetWindowLongPtr(_hWnd, GWLP_WNDPROC, _wndProcDelegate);
         }
 
@@ -75,7 +53,7 @@ namespace OasisBuildUtility
         #region Window Message Handling
         private delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-        private IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
+        private static IntPtr WndProc(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam)
         {
             const uint WM_GETMINMAXINFO = 0x0024;
 
@@ -88,10 +66,17 @@ namespace OasisBuildUtility
                 minMaxInfo.ptMinTrackSize.X = (int)(screenWidth * MinWidth);
                 minMaxInfo.ptMinTrackSize.Y = (int)(screenHeight * MinHeight);
                 Marshal.StructureToPtr(minMaxInfo, lParam, false);
+
                 return IntPtr.Zero;
             }
 
-            return CallWindowProc(_originalWndProc, hWnd, msg, wParam, lParam);
+            var window = App.MainWindow as MainWindow;
+            if (window != null)
+            {
+                return CallWindowProc(window._originalWndProc, hWnd, msg, wParam, lParam);
+            }
+
+            return DefWindowProc(hWnd, msg, wParam, lParam);
         }
         #endregion
 
@@ -129,3 +114,4 @@ namespace OasisBuildUtility
         #endregion
     }
 }
+
