@@ -116,7 +116,26 @@
                                 FontWeight="SemiBold"
                                 FontSize="11"
                                 Height="28"
-                                MinWidth="60"/>
+                                MinWidth="60"
+                                IsTabStop="False"
+                                UseSystemFocusVisuals="False"
+                                FocusVisualPrimaryBrush="{x:Null}"
+                                FocusVisualSecondaryBrush="{x:Null}">
+                            <Button.Resources>
+
+                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonBorderDisabled" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White"/>
+                            </Button.Resources>
+                        </Button>
+
+
 
 
                     </Grid>
@@ -166,7 +185,25 @@
                                 FontWeight="SemiBold"
                                 FontSize="11"
                                 Height="28"
-                                MinWidth="60"/>
+                                MinWidth="60"
+                                IsTabStop="False"
+                                UseSystemFocusVisuals="False"
+                                FocusVisualPrimaryBrush="{x:Null}"
+                                FocusVisualSecondaryBrush="{x:Null}">
+                            <Button.Resources>
+                                
+                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonBorderDisabled" Color="#1D4ED8"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White"/>
+                            </Button.Resources>
+                        </Button>
+
 
 
                     </Grid>
@@ -184,28 +221,40 @@
         Margin="0,0,0,8">
             <StackPanel HorizontalAlignment="Center">
                 <Button x:Name="BuildButton" 
-                Background="#22C55E"
-                Foreground="White"
-                BorderThickness="0"
-                CornerRadius="4"
-                Padding="20,8"
-                FontWeight="SemiBold"
-                FontSize="13"
-                Height="40"
-                MinWidth="140"
-                HorizontalAlignment="Center"
-                Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
+        Background="#22C55E"
+        Foreground="White"
+        BorderThickness="0"
+        CornerRadius="4"
+        Padding="20,8"
+        FontWeight="SemiBold"
+        FontSize="13"
+        Height="40"
+        MinWidth="140"
+        HorizontalAlignment="Center"
+        Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
+
+                    <Button.Resources>
+                       
+                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#22C55E"/>
+                        <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#22C55E"/>
+                        <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                        <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                        <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#22C55E"/>
+                        <SolidColorBrush x:Key="ButtonBorderPressed" Color="#22C55E"/>
+                    </Button.Resources>
+
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <FontIcon Glyph="&#xE768;" 
-                          FontSize="16" 
-                          Margin="0,0,6,0" 
-                          Foreground="White"/>
+                                  FontSize="16" 
+                                  Margin="0,0,6,0" 
+                                  Foreground="White"/>
                         <TextBlock Text="{x:Bind ViewModel.BuildButtonText, Mode=OneWay}" 
-                           FontSize="13"
-                           FontWeight="SemiBold" 
-                           Foreground="White"/>
+                                   FontSize="13"
+                                   FontWeight="SemiBold" 
+                                   Foreground="White"/>
                     </StackPanel>
                 </Button>
+
             </StackPanel>
         </Border>
 
@@ -240,28 +289,47 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Content="Clear"
-                Background="#2563EB"
-                Foreground="White"
-                BorderThickness="0"
-                CornerRadius="4"
-                Padding="10,4"
-                FontWeight="Bold"
-                FontSize="11"
-                Height="28"
-                MinWidth="60"
-                Margin="0,0,6,0"
-                Command="{x:Bind ViewModel.ClearLogCommand}"/>
+                                Background="#2563EB"
+                                Foreground="White"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                Padding="10,4"
+                                FontWeight="Bold"
+                                FontSize="11"
+                                Height="28"
+                                MinWidth="60"
+                                Margin="0,0,6,0"
+                                Command="{x:Bind ViewModel.ClearLogCommand}">
+                            <Button.Resources>
+                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#2563EB"/>
+                            </Button.Resources>
+                        </Button>
 
                         <Button Content="Export"
-                Background="#2563EB"
-                Foreground="White"
-                BorderThickness="0"
-                CornerRadius="4"
-                Padding="10,4"
-                FontWeight="Bold"
-                FontSize="11"
-                Height="28"
-                MinWidth="60"/>
+                                Background="#2563EB"
+                                Foreground="White"
+                                BorderThickness="0"
+                                CornerRadius="4"
+                                Padding="10,4"
+                                FontWeight="Bold"
+                                FontSize="11"
+                                Height="28"
+                                MinWidth="60">
+                            <Button.Resources>
+                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
+                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#2563EB"/>
+                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#2563EB"/>
+                            </Button.Resources>
+                        </Button>
+
                     </StackPanel>
                 </Grid>
 
@@ -284,7 +352,9 @@
                                    FontFamily="Cascadia Code, Consolas, monospace"
                                    FontSize="9"
                                    Foreground="#00D7FF"
-                                   LineHeight="12"/>
+                                   LineHeight="12"
+                                   Loaded="LogTextBlock_Loaded"/>
+
                     </ScrollViewer>
                 </Border>
             </Grid>

@@ -28,8 +28,6 @@ namespace OasisBuildUtility
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
-            this.ExtendsContentIntoTitleBar = true;
-            this.SetTitleBar(null);
         }
 
         private void InitializeAppWindow()
@@ -114,6 +112,14 @@ namespace OasisBuildUtility
         [DllImport("user32.dll")]
         private static extern int GetSystemMetrics(int nIndex);
         #endregion
+
+        private void LogTextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            LogTextBlock.LayoutUpdated += (_, _) =>
+            {
+                LogScrollViewer.ChangeView(null, LogScrollViewer.ScrollableHeight, null);
+            };
+        }
     }
 }
 
