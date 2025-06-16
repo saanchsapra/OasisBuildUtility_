@@ -28,6 +28,8 @@ namespace OasisBuildUtility
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
+            this.ExtendsContentIntoTitleBar = true;
+            this.SetTitleBar(null);
         }
 
         private void InitializeAppWindow()
