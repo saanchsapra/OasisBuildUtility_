@@ -1,4 +1,3 @@
-
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Windowing;
 using WinRT.Interop;
@@ -7,6 +6,7 @@ using System;
 using OasisBuildUtility.ViewModel;
 using Microsoft.UI;
 using System.Runtime.InteropServices;
+using Windows.Storage;
 
 namespace OasisBuildUtility
 {
@@ -17,9 +17,11 @@ namespace OasisBuildUtility
         private IntPtr _hWnd;
         private IntPtr _originalWndProc;
         private WndProcDelegate _wndProcDelegate;
+        private bool _isDarkTheme = false;
 
-        private const double MinWidth = 0.5;  
-        private const double MinHeight = 0.8; 
+        private const double MinWidth = 0.5;
+        private const double MinHeight = 0.8;
+        private const string ThemeSettingsKey = "AppTheme";
 
         public MainWindow()
         {
@@ -28,6 +30,7 @@ namespace OasisBuildUtility
             InitializeAppWindow();
             SetupWindowMessageHandling();
             SetInitialWindowSize();
+            LoadThemeSettings();
         }
 
         private void InitializeAppWindow()
@@ -39,7 +42,7 @@ namespace OasisBuildUtility
 
         private void SetupWindowMessageHandling()
         {
-            _wndProcDelegate = WndProc; // initialize delegate
+            _wndProcDelegate = WndProc;
             _originalWndProc = SetWindowLongPtr(_hWnd, GWLP_WNDPROC, _wndProcDelegate);
         }
 
@@ -48,6 +51,71 @@ namespace OasisBuildUtility
             int minWidth = (int)(GetSystemMetrics(0) * MinWidth);
             int minHeight = (int)(GetSystemMetrics(1) * MinHeight);
             _appWindow.Resize(new SizeInt32(minWidth, minHeight));
+        }
+
+        private void LoadThemeSettings()
+        {
+            try
+            {
+                var localSettings = ApplicationData.Current.LocalSettings;
+                if (localSettings.Values.ContainsKey(ThemeSettingsKey))
+                {
+                    _isDarkTheme = (bool)localSettings.Values[ThemeSettingsKey];
+                }
+                else
+                {
+                    _isDarkTheme = Application.Current.RequestedTheme == ApplicationTheme.Dark;
+                }
+
+                ApplyTheme();
+            }
+            catch (Exception)
+            {
+                _isDarkTheme = false;
+                ApplyTheme();
+            }
+        }
+
+        private void SaveThemeSettings()
+        {
+            try
+            {
+                var localSettings = ApplicationData.Current.LocalSettings;
+                localSettings.Values[ThemeSettingsKey] = _isDarkTheme;
+            }
+            catch (Exception)
+            {
+                // Handle save error silently
+            }
+        }
+
+        private void ApplyTheme()
+        {
+            // Set the requested theme for the Grid (which contains the ThemeDictionaries)
+            var rootGrid = this.Content as FrameworkElement;
+            if (rootGrid != null)
+            {
+                rootGrid.RequestedTheme = _isDarkTheme ? ElementTheme.Dark : ElementTheme.Light;
+            }
+
+            // Update the theme toggle button state and icon
+            if (_isDarkTheme)
+            {
+                ThemeIcon.Glyph = "\uE706"; // Moon icon for dark theme
+                ThemeToggleButton.IsChecked = true;
+            }
+            else
+            {
+                ThemeIcon.Glyph = "\uE708"; // Sun icon for light theme
+                ThemeToggleButton.IsChecked = false;
+            }
+        }
+
+        private void ThemeToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            _isDarkTheme = !_isDarkTheme;
+            ApplyTheme();
+            SaveThemeSettings();
         }
 
         #region Window Message Handling
@@ -122,4 +190,3 @@ namespace OasisBuildUtility
         }
     }
 }
-

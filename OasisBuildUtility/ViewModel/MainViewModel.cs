@@ -13,6 +13,8 @@ namespace OasisBuildUtility.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
+        #region Private Fields
+
         private string _javaSourcePath = "";
         private string _nativeSourcePath = "";
         private string _logText = "Ready to build...\n";
@@ -21,13 +23,27 @@ namespace OasisBuildUtility.ViewModel
         private string _operationStatus = "Ready";
         private readonly DispatcherQueue _dispatcherQueue;
 
+        #endregion
 
+        #region Commands
+
+        // Command for selecting Java source folder
         public ICommand SelectJavaSourceCommand { get; }
+
+        // Command for selecting Native source file
         public ICommand SelectNativeSourceCommand { get; }
+
+        // Command to start the build process
         public ICommand StartBuildCommand { get; }
+
+        // Command to clear the log output
         public ICommand ClearLogCommand { get; }
 
-        // Properties
+        #endregion
+
+        #region Public Properties
+
+        // Path selected for Java source folder
         public string JavaSourcePath
         {
             get => _javaSourcePath;
@@ -42,6 +58,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Path selected for native source file
         public string NativeSourcePath
         {
             get => _nativeSourcePath;
@@ -56,6 +73,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Text log output shown to the user
         public string LogText
         {
             get => _logText;
@@ -69,6 +87,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Boolean indicating if build is currently running
         public bool IsBuildRunning
         {
             get => _isBuildRunning;
@@ -84,6 +103,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Current progress value (0–100)
         public int ProgressValue
         {
             get => _progressValue;
@@ -98,6 +118,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // String showing current operation status
         public string OperationStatus
         {
             get => _operationStatus;
@@ -111,15 +132,21 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
-        // Computed properties
+        // Computed property: text shown on build button
         public string BuildButtonText => IsBuildRunning ? "BUILDING..." : "START BUILD";
+
+        // Computed property: progress text label
         public string ProgressText => $"Progress: {ProgressValue}%";
+
+        #endregion
+
+        #region Constructor
 
         public MainViewModel()
         {
             _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-            // Initialize commands
+            // Initialize commands with corresponding actions
             SelectJavaSourceCommand = new RelayCommand(async () => await SelectJavaSourcePathAsync());
             SelectNativeSourceCommand = new RelayCommand(async () => await SelectNativeSourcePathAsync());
             StartBuildCommand = new RelayCommand(async () => await BuildButtonAsync(), () => !IsBuildRunning);
@@ -128,6 +155,11 @@ namespace OasisBuildUtility.ViewModel
             AppendLogText("Build utility ready. Select your paths and start building.");
         }
 
+        #endregion
+
+        #region Path Selection Methods
+
+        // Opens a folder picker to choose Java source path
         public async Task SelectJavaSourcePathAsync()
         {
             try
@@ -156,6 +188,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Opens a file picker to choose Native source file
         public async Task SelectNativeSourcePathAsync()
         {
             try
@@ -184,6 +217,11 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        #endregion
+
+        #region Build Process Execution
+
+        // Starts the build process if not already running
         public async Task BuildButtonAsync()
         {
             if (IsBuildRunning) return;
@@ -209,6 +247,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        // Runs the batch process (example: ipconfig)
         private async Task RunBuildProcessAsync()
         {
             Process process = null;
@@ -219,7 +258,7 @@ namespace OasisBuildUtility.ViewModel
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "/c ipconfig", // 🔧 Replaced with `ipconfig
+                    Arguments = "/c ipconfig", //run the batch command here
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -228,25 +267,21 @@ namespace OasisBuildUtility.ViewModel
 
                 process = new Process { StartInfo = startInfo };
 
+                // Output event handler
                 process.OutputDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                     {
-                        _dispatcherQueue.TryEnqueue(() =>
-                        {
-                            AppendLogText(e.Data);
-                        });
+                        _dispatcherQueue.TryEnqueue(() => AppendLogText(e.Data));
                     }
                 };
 
+                // Error event handler
                 process.ErrorDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                     {
-                        _dispatcherQueue.TryEnqueue(() =>
-                        {
-                            AppendLogText($"ERROR: {e.Data}");
-                        });
+                        _dispatcherQueue.TryEnqueue(() => AppendLogText($"ERROR: {e.Data}"));
                     }
                 };
 
@@ -264,14 +299,7 @@ namespace OasisBuildUtility.ViewModel
             }
             finally
             {
-                try
-                {
-                    process?.Dispose();
-                }
-                catch
-                {
-                    // Ignore disposal errors
-                }
+                process?.Dispose();
             }
 
             _dispatcherQueue.TryEnqueue(() =>
@@ -282,6 +310,11 @@ namespace OasisBuildUtility.ViewModel
             });
         }
 
+        #endregion
+
+        #region Helper Methods
+
+        // Appends text to the log with timestamp
         public void AppendLogText(string text)
         {
             _dispatcherQueue.TryEnqueue(() =>
@@ -290,6 +323,7 @@ namespace OasisBuildUtility.ViewModel
             });
         }
 
+        // Clears the log and resets progress/status
         public void ClearLog()
         {
             _dispatcherQueue.TryEnqueue(() =>
@@ -300,6 +334,7 @@ namespace OasisBuildUtility.ViewModel
             });
         }
 
+        // Raises CanExecuteChanged on the start build command
         private void RaiseCanExecuteChanged()
         {
             if (StartBuildCommand is RelayCommand command)
@@ -308,11 +343,18 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
+        #endregion
+
+        #region INotifyPropertyChanged Implementation
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        #endregion
     }
 }
+

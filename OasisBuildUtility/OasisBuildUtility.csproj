@@ -16,6 +16,9 @@
     <Content Remove="Assets\colorplast-systems-pvt.-ltd.png" />
     <Content Remove="Assets\logoo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Themes.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -46,6 +49,11 @@
 		<Reference Include="System.Xaml">
 			<HintPath>$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.8\System.Xaml.dll</HintPath>
 		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Page Update="Themes.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </Page>
 	</ItemGroup>
 
   <!--

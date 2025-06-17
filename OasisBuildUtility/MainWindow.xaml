@@ -8,8 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-
-    <Grid Background="#F8FAFC" Margin="8">
+    <Grid Background="{ThemeResource AppBackgroundBrush}" Margin="8">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -19,45 +18,54 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER SECTION -->
-        <Border Grid.Row="0"
-                Background="#FFFFFF" 
-                BorderBrush="#E2E8F0" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="12" 
-                Margin="0,0,0,8">
-            <StackPanel Orientation="Horizontal" 
-                        HorizontalAlignment="Center" 
-                        VerticalAlignment="Center">
+        <Border Grid.Row="0" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,8">
+            <Grid>
+                <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center">
 
-                <Border Background="#1E293B" 
-                        CornerRadius="6" 
-                        Padding="6"
-                        Margin="0,0,8,0">
+                    <Border Background="#1E293B" 
+                            CornerRadius="6" 
+                            Padding="6"
+                            Margin="0,0,8,0">
+                        <Path Fill="White" 
+                              Width="20" 
+                              Height="20"
+                              Stretch="Uniform"
+                              Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.03C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                    </Border>
 
-                    <Path Fill="White" 
-                          Width="20" 
-                          Height="20"
-                          Stretch="Uniform"
-                          Data="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.03C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
-                </Border>
+                    <TextBlock Text="Oasis Build Utility" 
+                               FontSize="16" 
+                               FontWeight="Bold" 
+                               Foreground="{ThemeResource PrimaryTextBrush}"
+                               VerticalAlignment="Center"/>
+                </StackPanel>
 
-                <TextBlock Text="Oasis Build Utility" 
-                           FontSize="16" 
-                           FontWeight="Bold" 
-                           Foreground="#1E293B"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
+                <!-- Theme Toggle Button -->
+                <ToggleButton x:Name="ThemeToggleButton"
+                              HorizontalAlignment="Right"
+                              VerticalAlignment="Center"
+                              Background="Transparent"
+                              BorderThickness="1"
+                              BorderBrush="{ThemeResource CardBorderBrush}"
+                              CornerRadius="6"
+                              Width="40"
+                              Height="40"
+                              Click="ThemeToggleButton_Click"
+                              ToolTipService.ToolTip="Toggle Light/Dark Theme">
+                    <ToggleButton.Content>
+                        <FontIcon x:Name="ThemeIcon"
+                                  Glyph="&#xE706;"
+                                  FontSize="16"
+                                  Foreground="{ThemeResource PrimaryTextBrush}"/>
+                    </ToggleButton.Content>
+                </ToggleButton>
+            </Grid>
         </Border>
 
         <!-- SOURCE PATHS SECTION -->
-        <Border Grid.Row="1"
-                Background="#FFFFFF" 
-                BorderBrush="#E2E8F0" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="12" 
-                Margin="0,0,0,8">
+        <Border Grid.Row="1" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -69,7 +77,7 @@
                            Text="Source Configuration" 
                            FontSize="12" 
                            FontWeight="SemiBold" 
-                           Foreground="#1E293B" 
+                           Foreground="{ThemeResource PrimaryTextBrush}" 
                            Margin="0,0,0,8"/>
 
                 <!-- Java Source Path -->
@@ -83,7 +91,7 @@
                                Text="Java Source Directory" 
                                FontSize="10" 
                                FontWeight="Medium" 
-                               Foreground="#64748B" 
+                               Foreground="{ThemeResource SecondaryTextBrush}" 
                                Margin="0,0,0,3"/>
 
                     <Grid Grid.Row="1">
@@ -94,50 +102,24 @@
                         <TextBox Grid.Column="0" 
                                  x:Name="JavaSourcePathTextBox" 
                                  Text="{x:Bind ViewModel.JavaSourcePath, Mode=TwoWay}" 
-                                 BorderBrush="#E2E8F0"
+                                 BorderBrush="{ThemeResource CardBorderBrush}"
                                  BorderThickness="1"
                                  CornerRadius="4"
                                  Padding="6"
                                  FontSize="10"
                                  Height="28"
-                                 Background="White"
-                                 RequestedTheme="Light"
+                                 Background="{ThemeResource CardBackgroundBrush}"
+                                 Foreground="{ThemeResource PrimaryTextBrush}"
                                  PlaceholderText="Select Java source directory..."
                                  Margin="0,0,6,0"/>
                         <Button Grid.Column="1" 
                                 Content="Browse" 
                                 Command="{x:Bind ViewModel.SelectJavaSourceCommand}" 
-                                Background="#2563EB"
-                                Foreground="White"
-                                BorderBrush="#1D4ED8"
-                                BorderThickness="1"
-                                CornerRadius="4"
+                                Style="{StaticResource PrimaryButtonStyle}"
                                 Padding="8,2"
-                                FontWeight="SemiBold"
                                 FontSize="11"
                                 Height="28"
-                                MinWidth="60"
-                                IsTabStop="False"
-                                UseSystemFocusVisuals="False"
-                                FocusVisualPrimaryBrush="{x:Null}"
-                                FocusVisualSecondaryBrush="{x:Null}">
-                            <Button.Resources>
-
-                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonBorderDisabled" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White"/>
-                            </Button.Resources>
-                        </Button>
-
-
-
-
+                                MinWidth="60"/>
                     </Grid>
                 </Grid>
 
@@ -152,7 +134,7 @@
                                Text="Native Source Directory" 
                                FontSize="10" 
                                FontWeight="Medium" 
-                               Foreground="#64748B" 
+                               Foreground="{ThemeResource SecondaryTextBrush}" 
                                Margin="0,0,0,3"/>
 
                     <Grid Grid.Row="1">
@@ -163,86 +145,40 @@
                         <TextBox Grid.Column="0" 
                                  x:Name="NativeSourcePathTextBox" 
                                  Text="{x:Bind ViewModel.NativeSourcePath, Mode=TwoWay}" 
-                                 BorderBrush="#E2E8F0"
+                                 BorderBrush="{ThemeResource CardBorderBrush}"
                                  BorderThickness="1"
                                  CornerRadius="4"
                                  Padding="6"
                                  FontSize="10"
                                  Height="28"
-                                 Background="White"
-                                 RequestedTheme="Light"
+                                 Background="{ThemeResource CardBackgroundBrush}"
+                                 Foreground="{ThemeResource PrimaryTextBrush}"
                                  PlaceholderText="Select native source directory..."
                                  Margin="0,0,6,0"/>
                         <Button Grid.Column="1" 
                                 Content="Browse" 
                                 Command="{x:Bind ViewModel.SelectNativeSourceCommand}" 
-                                Background="#2563EB"
-                                Foreground="White"
-                                BorderBrush="#1D4ED8"
-                                BorderThickness="1"
-                                CornerRadius="4"
+                                Style="{StaticResource PrimaryButtonStyle}"
                                 Padding="8,2"
-                                FontWeight="SemiBold"
                                 FontSize="11"
                                 Height="28"
-                                MinWidth="60"
-                                IsTabStop="False"
-                                UseSystemFocusVisuals="False"
-                                FocusVisualPrimaryBrush="{x:Null}"
-                                FocusVisualSecondaryBrush="{x:Null}">
-                            <Button.Resources>
-                                
-                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundDisabled" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonBorderDisabled" Color="#1D4ED8"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundDisabled" Color="White"/>
-                            </Button.Resources>
-                        </Button>
-
-
-
+                                MinWidth="60"/>
                     </Grid>
                 </Grid>
             </Grid>
         </Border>
 
         <!-- BUILD SECTION -->
-        <Border Grid.Row="2"
-        Background="#FFFFFF" 
-        BorderBrush="#E2E8F0" 
-        BorderThickness="1" 
-        CornerRadius="8" 
-        Padding="12" 
-        Margin="0,0,0,8">
+        <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,8">
             <StackPanel HorizontalAlignment="Center">
                 <Button x:Name="BuildButton" 
-        Background="#22C55E"
-        Foreground="White"
-        BorderThickness="0"
-        CornerRadius="4"
-        Padding="20,8"
-        FontWeight="SemiBold"
-        FontSize="13"
-        Height="40"
-        MinWidth="140"
-        HorizontalAlignment="Center"
-        Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
-
-                    <Button.Resources>
-                       
-                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#22C55E"/>
-                        <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#22C55E"/>
-                        <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
-                        <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
-                        <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#22C55E"/>
-                        <SolidColorBrush x:Key="ButtonBorderPressed" Color="#22C55E"/>
-                    </Button.Resources>
-
+                        Style="{StaticResource SuccessButtonStyle}"
+                        Padding="20,8"
+                        FontSize="13"
+                        Height="40"
+                        MinWidth="140"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <FontIcon Glyph="&#xE768;" 
                                   FontSize="16" 
@@ -254,20 +190,11 @@
                                    Foreground="White"/>
                     </StackPanel>
                 </Button>
-
             </StackPanel>
         </Border>
 
-
-
         <!-- LOG WINDOW SECTION -->
-        <Border Grid.Row="3"
-                Background="#FFFFFF" 
-                BorderBrush="#E2E8F0" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="0" 
-                Margin="0,0,0,8">
+        <Border Grid.Row="3" Style="{StaticResource CardBorderStyle}" Padding="0" Margin="0,0,0,8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -285,60 +212,32 @@
                                Text="Build Log" 
                                FontSize="12" 
                                FontWeight="SemiBold" 
-                               Foreground="#1E293B"/>
+                               Foreground="{ThemeResource PrimaryTextBrush}"/>
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                         <Button Content="Clear"
-                                Background="#2563EB"
-                                Foreground="White"
-                                BorderThickness="0"
-                                CornerRadius="4"
+                                Style="{StaticResource PrimaryButtonStyle}"
                                 Padding="10,4"
-                                FontWeight="Bold"
                                 FontSize="11"
                                 Height="28"
                                 MinWidth="60"
                                 Margin="0,0,6,0"
-                                Command="{x:Bind ViewModel.ClearLogCommand}">
-                            <Button.Resources>
-                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#2563EB"/>
-                            </Button.Resources>
-                        </Button>
+                                Command="{x:Bind ViewModel.ClearLogCommand}"/>
 
                         <Button Content="Export"
-                                Background="#2563EB"
-                                Foreground="White"
-                                BorderThickness="0"
-                                CornerRadius="4"
+                                Style="{StaticResource PrimaryButtonStyle}"
                                 Padding="10,4"
-                                FontWeight="Bold"
                                 FontSize="11"
                                 Height="28"
-                                MinWidth="60">
-                            <Button.Resources>
-                                <SolidColorBrush x:Key="ButtonBackgroundPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBackgroundPressed" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPointerOver" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonForegroundPressed" Color="White"/>
-                                <SolidColorBrush x:Key="ButtonBorderPointerOver" Color="#2563EB"/>
-                                <SolidColorBrush x:Key="ButtonBorderPressed" Color="#2563EB"/>
-                            </Button.Resources>
-                        </Button>
-
+                                MinWidth="60"/>
                     </StackPanel>
                 </Grid>
 
-
                 <!-- Log Display -->
                 <Border Grid.Row="1" 
-                        Background="#1E1E1E" 
+                        Background="{ThemeResource LogBackgroundBrush}" 
                         CornerRadius="4" 
-                        BorderBrush="#E2E8F0" 
+                        BorderBrush="{ThemeResource CardBorderBrush}" 
                         BorderThickness="1"
                         Margin="12,0,12,12"
                         MinHeight="120">
@@ -351,22 +250,16 @@
                                    TextWrapping="Wrap"
                                    FontFamily="Cascadia Code, Consolas, monospace"
                                    FontSize="9"
-                                   Foreground="#00D7FF"
+                                   Foreground="{ThemeResource LogTextBrush}"
                                    LineHeight="12"
                                    Loaded="LogTextBlock_Loaded"/>
-
                     </ScrollViewer>
                 </Border>
             </Grid>
         </Border>
 
         <!-- STATUS SECTION -->
-        <Border Grid.Row="4"
-                Background="#FFFFFF" 
-                BorderBrush="#E2E8F0" 
-                BorderThickness="1" 
-                CornerRadius="8" 
-                Padding="12">
+        <Border Grid.Row="4" Style="{StaticResource CardBorderStyle}">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -379,10 +272,10 @@
                                Text="{x:Bind ViewModel.OperationStatus, Mode=OneWay}"
                                FontSize="11"
                                FontWeight="SemiBold"
-                               Foreground="#1E293B"/>
+                               Foreground="{ThemeResource PrimaryTextBrush}"/>
                     <TextBlock Text="Build process status and progress tracking"
                                FontSize="9"
-                               Foreground="#64748B"
+                               Foreground="{ThemeResource SecondaryTextBrush}"
                                Margin="0,1,0,0"/>
                 </StackPanel>
 
@@ -390,7 +283,7 @@
                 <StackPanel Grid.Column="1" VerticalAlignment="Center" MinWidth="120">
                     <TextBlock Text="{x:Bind ViewModel.ProgressText, Mode=OneWay}" 
                                FontSize="9" 
-                               Foreground="#64748B"
+                               Foreground="{ThemeResource SecondaryTextBrush}"
                                HorizontalAlignment="Right"
                                Margin="0,0,0,3"/>
                     <ProgressBar x:Name="ProgressBar"
@@ -399,11 +292,10 @@
                                  Maximum="100"
                                  Value="{x:Bind ViewModel.ProgressValue, Mode=OneWay}"
                                  CornerRadius="2"
-                                 Background="#E2E8F0"
+                                 Background="{ThemeResource CardBorderBrush}"
                                  Foreground="#10B981"/>
                 </StackPanel>
             </Grid>
         </Border>
-
     </Grid>
 </Window>
