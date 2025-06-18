@@ -24,6 +24,7 @@ namespace OasisBuildUtility.ViewModel
         private int _progressValue = 0;
         private string _operationStatus = "Ready";
         private readonly DispatcherQueue _dispatcherQueue;
+        private Process _currentProcess;
 
         #endregion
 
@@ -37,6 +38,9 @@ namespace OasisBuildUtility.ViewModel
 
         // Command to start the build process
         public ICommand StartBuildCommand { get; }
+
+        // Command to stop the build process
+        public ICommand StopBuildCommand { get; }
 
         // Command to clear the log output
         public ICommand ClearLogCommand { get; }
@@ -152,6 +156,7 @@ namespace OasisBuildUtility.ViewModel
             SelectJavaSourceCommand = new RelayCommand(async () => await SelectJavaSourcePathAsync());
             SelectNativeSourceCommand = new RelayCommand(async () => await SelectNativeSourcePathAsync());
             StartBuildCommand = new RelayCommand(async () => await BuildButtonAsync(), () => !IsBuildRunning);
+            StopBuildCommand = new RelayCommand(StopBuild, () => IsBuildRunning);
             ClearLogCommand = new RelayCommand(ClearLog);
 
             AppendLogText("Build utility ready. Select your paths and start building.");
@@ -252,7 +257,6 @@ namespace OasisBuildUtility.ViewModel
         // Runs the batch process with filtered output to exclude directory prompts
         private async Task RunBuildProcessAsync()
         {
-            Process process = null;
             int exitCode = -1;
 
             try
@@ -267,10 +271,10 @@ namespace OasisBuildUtility.ViewModel
                     CreateNoWindow = true
                 };
 
-                process = new Process { StartInfo = startInfo };
+                _currentProcess = new Process { StartInfo = startInfo };
 
                 // Output handler with directory filtering
-                process.OutputDataReceived += (sender, e) =>
+                _currentProcess.OutputDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                     {
@@ -283,7 +287,7 @@ namespace OasisBuildUtility.ViewModel
                 };
 
                 // Error handler
-                process.ErrorDataReceived += (sender, e) =>
+                _currentProcess.ErrorDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                     {
@@ -291,12 +295,12 @@ namespace OasisBuildUtility.ViewModel
                     }
                 };
 
-                process.Start();
-                process.BeginOutputReadLine();
-                process.BeginErrorReadLine();
+                _currentProcess.Start();
+                _currentProcess.BeginOutputReadLine();
+                _currentProcess.BeginErrorReadLine();
 
-                await process.WaitForExitAsync();
-                exitCode = process.ExitCode;
+                await _currentProcess.WaitForExitAsync();
+                exitCode = _currentProcess.ExitCode;
             }
             catch (Exception ex)
             {
@@ -305,7 +309,8 @@ namespace OasisBuildUtility.ViewModel
             }
             finally
             {
-                process?.Dispose();
+                _currentProcess?.Dispose();
+                _currentProcess = null;
             }
 
             _dispatcherQueue.TryEnqueue(() =>
@@ -314,6 +319,24 @@ namespace OasisBuildUtility.ViewModel
                 AppendLogText($"Build process completed with exit code: {exitCode}");
                 OperationStatus = exitCode == 0 ? "Build Completed" : "Build Failed";
             });
+        }
+
+        // Stops the currently running build process
+        public void StopBuild()
+        {
+            if (_currentProcess != null && !_currentProcess.HasExited)
+            {
+                try
+                {
+                    _currentProcess.Kill(true); // Kill the process and all child processes
+                    AppendLogText("Build process stopped by user.");
+                    OperationStatus = "Build Stopped";
+                }
+                catch (Exception ex)
+                {
+                    AppendLogText($"Error stopping build process: {ex.Message}");
+                }
+            }
         }
 
         // Helper method to identify and filter out directory prompts
@@ -373,9 +396,13 @@ namespace OasisBuildUtility.ViewModel
         // Raises CanExecuteChanged on the start build command
         private void RaiseCanExecuteChanged()
         {
-            if (StartBuildCommand is RelayCommand command)
+            if (StartBuildCommand is RelayCommand startCommand)
             {
-                command.RaiseCanExecuteChanged();
+                startCommand.RaiseCanExecuteChanged();
+            }
+            if (StopBuildCommand is RelayCommand stopCommand)
+            {
+                stopCommand.RaiseCanExecuteChanged();
             }
         }
 

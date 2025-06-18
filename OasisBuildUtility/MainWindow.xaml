@@ -170,14 +170,14 @@
 
         <!-- BUILD SECTION -->
         <Border Grid.Row="2" Style="{StaticResource CardBorderStyle}" Margin="0,0,0,8">
-            <StackPanel HorizontalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Spacing="12">
+                <!-- Start Build Button -->
                 <Button x:Name="BuildButton" 
                         Style="{StaticResource SuccessButtonStyle}"
                         Padding="20,8"
                         FontSize="13"
                         Height="40"
                         MinWidth="140"
-                        HorizontalAlignment="Center"
                         Command="{x:Bind ViewModel.StartBuildCommand, Mode=OneWay}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <FontIcon Glyph="&#xE768;" 
@@ -185,6 +185,93 @@
                                   Margin="0,0,6,0" 
                                   Foreground="White"/>
                         <TextBlock Text="{x:Bind ViewModel.BuildButtonText, Mode=OneWay}" 
+                                   FontSize="13"
+                                   FontWeight="SemiBold" 
+                                   Foreground="White"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Stop Build Button -->
+                
+                <Button x:Name="StopButton" 
+                        Background="#EF4444"
+                        BorderBrush="#EF4444"
+                        BorderThickness="1"
+                        CornerRadius="6"
+                        Padding="20,8"
+                        FontSize="13"
+                        Height="40"
+                        MinWidth="140"
+                        Command="{x:Bind ViewModel.StopBuildCommand, Mode=OneWay}">
+
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="RootBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    Padding="{TemplateBinding Padding}">
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+
+                                        <VisualState x:Name="PointerOver">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#DC2626"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#DC2626"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Pressed">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#B91C1C"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#B91C1C"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+
+                                        <VisualState x:Name="Disabled">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="Background">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#9CA3AF"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetName="RootBorder" 
+                                                               Storyboard.TargetProperty="BorderBrush">
+                                                    <DiscreteObjectKeyFrame KeyTime="0" Value="#9CA3AF"/>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+
+                                <ContentPresenter x:Name="ContentPresenter"
+                                  Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <FontIcon Glyph="&#xE71A;" 
+                                  FontSize="16" 
+                                  Margin="0,0,6,0" 
+                                  Foreground="White"/>
+                        <TextBlock Text="STOP BUILD" 
                                    FontSize="13"
                                    FontWeight="SemiBold" 
                                    Foreground="White"/>
