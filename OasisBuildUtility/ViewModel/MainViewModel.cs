@@ -3,11 +3,13 @@ using Microsoft.UI.Xaml;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using WinRT.Interop;
+using System.Text.RegularExpressions;
 
 namespace OasisBuildUtility.ViewModel
 {
@@ -247,7 +249,7 @@ namespace OasisBuildUtility.ViewModel
             }
         }
 
-        // Runs the batch process (example: ipconfig)
+        // Runs the batch process with filtered output to exclude directory prompts
         private async Task RunBuildProcessAsync()
         {
             Process process = null;
@@ -258,7 +260,7 @@ namespace OasisBuildUtility.ViewModel
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = "cmd.exe",
-                    Arguments = "/c ipconfig", //run the batch command here
+                    Arguments = $"/c \"C:\\Users\\Dell\\OneDrive\\Documents\\HelloWorld.bat\"",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
@@ -267,16 +269,20 @@ namespace OasisBuildUtility.ViewModel
 
                 process = new Process { StartInfo = startInfo };
 
-                // Output event handler
+                // Output handler with directory filtering
                 process.OutputDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
                     {
-                        _dispatcherQueue.TryEnqueue(() => AppendLogText(e.Data));
+                        // Filter out directory prompts and empty lines
+                        if (!IsDirectoryPrompt(e.Data) && !string.IsNullOrWhiteSpace(e.Data))
+                        {
+                            _dispatcherQueue.TryEnqueue(() => AppendLogText(e.Data));
+                        }
                     }
                 };
 
-                // Error event handler
+                // Error handler
                 process.ErrorDataReceived += (sender, e) =>
                 {
                     if (!string.IsNullOrEmpty(e.Data))
@@ -308,6 +314,36 @@ namespace OasisBuildUtility.ViewModel
                 AppendLogText($"Build process completed with exit code: {exitCode}");
                 OperationStatus = exitCode == 0 ? "Build Completed" : "Build Failed";
             });
+        }
+
+        // Helper method to identify and filter out directory prompts
+        private bool IsDirectoryPrompt(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+                return true;
+
+            var trimmedLine = line.Trim();
+
+            // Filter out any line that contains a drive letter and ends with >
+            if (Regex.IsMatch(trimmedLine, @"^[A-Za-z]:[^>]*>.*$"))
+                return true;
+
+            // Filter out lines that start with a path and contain >
+            if (trimmedLine.Contains(":\\") && trimmedLine.Contains(">"))
+                return true;
+
+            // Filter out separator lines (lines with only dashes or equals)
+            if (Regex.IsMatch(trimmedLine, @"^[=\-\s]+$"))
+                return true;
+
+            // Filter out lines that look like command prompts (more aggressive)
+            if (trimmedLine.Contains("System32>") ||
+                trimmedLine.Contains("Windows>") ||
+                trimmedLine.Contains("Users>") ||
+                trimmedLine.Contains("Documents>"))
+                return true;
+
+            return false;
         }
 
         #endregion
@@ -357,4 +393,3 @@ namespace OasisBuildUtility.ViewModel
         #endregion
     }
 }
-

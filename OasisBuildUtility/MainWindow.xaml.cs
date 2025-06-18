@@ -181,12 +181,29 @@ namespace OasisBuildUtility
         private static extern int GetSystemMetrics(int nIndex);
         #endregion
 
+        private bool _autoScroll = true;
+
         private void LogTextBlock_Loaded(object sender, RoutedEventArgs e)
         {
+            // Detect manual scroll
+            LogScrollViewer.ViewChanged += (s, args) =>
+            {
+                // Check if user manually scrolled away from the bottom
+                double tolerance = 20.0;
+                bool isNearBottom = LogScrollViewer.VerticalOffset >= LogScrollViewer.ScrollableHeight - tolerance;
+
+                _autoScroll = isNearBottom;
+            };
+
+            // Scroll to bottom only if user hasn’t scrolled up
             LogTextBlock.LayoutUpdated += (_, _) =>
             {
-                LogScrollViewer.ChangeView(null, LogScrollViewer.ScrollableHeight, null);
+                if (_autoScroll)
+                {
+                    LogScrollViewer.ChangeView(null, LogScrollViewer.ScrollableHeight, null);
+                }
             };
         }
+
     }
 }
